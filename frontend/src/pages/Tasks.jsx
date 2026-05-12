@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config.js";
 
 function Tasks() {
   const [tasks, setTasks]       = useState([]);
@@ -15,7 +16,7 @@ function Tasks() {
 
   async function fetchTasks() {
     try {
-      const res  = await fetch("http://localhost:5000/tasks", {
+      const res  = await fetch(`${API_URL}/tasks`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.status === 401) { navigate("/login"); return; }
@@ -27,7 +28,7 @@ function Tasks() {
 
   async function handleCreate() {
     if (!title) return alert("Title is required!");
-    const res  = await fetch("http://localhost:5000/tasks", {
+    const res  = await fetch(`${API_URL}/tasks`, {
       method:  "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body:    JSON.stringify({ title, description })
@@ -38,7 +39,7 @@ function Tasks() {
   }
 
   async function handleToggle(id) {
-    const res     = await fetch(`http://localhost:5000/tasks/${id}`, {
+    const res     = await fetch(`${API_URL}/tasks/${id}`, {
       method:  "PUT",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -47,7 +48,7 @@ function Tasks() {
   }
 
   async function handleDelete(id) {
-    await fetch(`http://localhost:5000/tasks/${id}`, {
+    await fetch(`${API_URL}/tasks/${id}`, {
       method:  "DELETE",
       headers: { Authorization: `Bearer ${token}` }
     });
